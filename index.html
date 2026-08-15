@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptBridge — You don't need to know how to prompt AI. Just tell us what you want.</title>
+  <meta name="description" content="Type in Marathi, Hindi, Hinglish, or broken English. PromptBridge understands your real intent and turns it into precision prompts for ChatGPT, Claude, Gemini, and Perplexity with 1-click launch.">
+  <meta name="keywords" content="AI prompt generator, Marathi prompt, Hinglish AI, ChatGPT prompt builder, Claude prompts, beginner AI">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14'/><path d='M10 19v-4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v4'/><path d='M4 10h16'/></svg>">
+</head>
+<body>
+
+  <!-- Background Ambient Glows -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+  <!-- App Container -->
+  <div class="app-wrapper">
+
+    <!-- Top Navigation Header -->
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-group">
+          <a href="/" class="brand-logo" id="brand-logo" aria-label="PromptBridge Home">
+            <div class="logo-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14"/>
+                <path d="M9 19v-5a3 3 0 0 1 6 0v5"/>
+                <path d="M4 10h16"/>
+              </svg>
+            </div>
+            <span class="brand-title">Prompt<span>Bridge</span></span>
+          </a>
+          <span class="brand-pill">
+            <span class="pulse-indicator"></span>
+            Multilingual Intent AI
+          </span>
+        </div>
+
+        <nav class="header-actions">
+          <button type="button" class="btn-icon" id="btn-how-it-works" title="How PromptBridge works" aria-label="How it works">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            <span class="nav-text">How It Works</span>
+          </button>
+          
+          <button type="button" class="btn-icon" id="btn-open-history" title="View prompt history" aria-label="History">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+            <span class="nav-text">History</span>
+            <span class="badge-count" id="history-count-badge" style="display:none;">0</span>
+          </button>
+
+          <button type="button" class="btn-icon" id="btn-open-settings" title="Settings & API Key" aria-label="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span class="nav-text">Settings</span>
+          </button>
+
+          <button type="button" class="btn-icon theme-toggle-btn" id="btn-theme-toggle" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+            <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="site-main">
+
+      <!-- Hero Section -->
+      <section class="hero-section" id="hero-section">
+        <div class="hero-content">
+          <div class="tagline-pill">
+            <span class="sparkle">✨</span> Marathi • Hindi • Hinglish • Broken English
+          </div>
+          
+          <h1 class="hero-title">
+            You don't need to know how to prompt AI.
+            <span class="hero-sub-title">Just tell us what you want.</span>
+          </h1>
+
+          <p class="hero-description">
+            Type with spelling errors, mixed languages, or messy thoughts. PromptBridge extracts your <strong>actual intent</strong> and builds an expert, structured prompt ready for ChatGPT, Claude, Gemini, or Perplexity.
+          </p>
+        </div>
+
+        <!-- Interactive Input Card -->
+        <div class="input-card" id="input-card">
+          <form id="prompt-form" class="prompt-form" onsubmit="return false;">
+            <div class="textarea-container">
+              <label for="user-prompt-input" class="sr-only">Tell us what you want AI to do</label>
+              <textarea
+                id="user-prompt-input"
+                name="userPrompt"
+                rows="4"
+                placeholder="Tell us what you want AI to do... (e.g. 'mala college sathi easy arduino project pahije low cost madhe')"
+                maxlength="1500"
+                autocomplete="off"
+                spellcheck="false"
+                required
+              ></textarea>
+              
+              <div class="textarea-corner-actions">
+                <button type="button" class="btn-icon-subtle" id="btn-clear-input" title="Clear text" style="display:none;" aria-label="Clear input">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+                <button type="button" class="btn-voice" id="btn-voice-input" title="Speak in Marathi, Hindi, or English" aria-label="Voice input">
+                  <svg class="mic-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                  <span class="voice-text">Voice</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Controls Toolbar (Tone, Audience & Submit Button) -->
+            <div class="form-bottom-bar">
+              <div class="selectors-group">
+                <div class="selector-item">
+                  <label for="select-tone" class="selector-label">Format Depth:</label>
+                  <select id="select-tone" class="custom-select" aria-label="Format depth">
+                    <option value="Detailed" selected>Comprehensive & Detailed</option>
+                    <option value="Quick">Quick & Direct</option>
+                    <option value="StepByStep">Step-by-Step Tutorial</option>
+                    <option value="Creative">Creative / Brainstorming</option>
+                  </select>
+                </div>
+
+                <div class="selector-item">
+                  <label for="select-audience" class="selector-label">Target Role:</label>
+                  <select id="select-audience" class="custom-select" aria-label="Target role">
+                    <option value="Standard" selected>Auto-detect from input</option>
+                    <option value="Student">College / Student</option>
+                    <option value="Professional">Workplace / Professional</option>
+                    <option value="Beginner">Beginner Friendly</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="submit-group">
+                <span class="char-count" id="char-counter">0 / 1500</span>
+                <button type="submit" class="btn-primary" id="btn-generate" aria-label="Generate optimized prompt">
+                  <span class="btn-content">
+                    <svg class="sparkle-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    <span>Generate Prompt</span>
+                  </span>
+                  <span class="shortcut-badge">Ctrl + ↵</span>
+                  <span class="loader-spinner" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Multilingual Starter Chips -->
+        <div class="starter-chips-container">
+          <span class="chips-label">Try these real examples:</span>
+          <div class="chips-list" id="chips-list">
+            <button type="button" class="chip-item" data-lang="Marathi" data-text="mala college sathi easy arduino project pahije low cost madhe">
+              <span class="chip-badge mr">Marathi</span>
+              <span class="chip-text">"mala college sathi easy arduino project pahije low cost madhe"</span>
+            </button>
+
+            <button type="button" class="chip-item" data-lang="Hinglish" data-text="boss ko fever ke liye leave email likh do professional 2 days">
+              <span class="chip-badge hi">Hinglish</span>
+              <span class="chip-text">"boss ko fever ke liye leave email likh do professional"</span>
+            </button>
+
+            <button type="button" class="chip-item" data-lang="Coding" data-text="python script to scrape amazon product prices and save to excel file">
+              <span class="chip-badge py">Coding</span>
+              <span class="chip-text">"python script to scrape e-commerce prices to excel"</span>
+            </button>
+
+            <button type="button" class="chip-item" data-lang="Travel" data-text="cheap budget travel 3 days goa with friends under 5000 rs">
+              <span class="chip-badge tr">Broken English</span>
+              <span class="chip-text">"cheap 3 days goa travel plan with friends under 5000"</span>
+            </button>
+
+            <button type="button" class="chip-item" data-lang="Visual" data-text="make 90s vintage anime portrait aesthetic aesthetic wallpaper with soft lights">
+              <span class="chip-badge im">Visual Art</span>
+              <span class="chip-text">"90s vintage anime aesthetic character portrait"</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Display Section -->
+      <section class="results-section" id="results-section" style="display:none;" aria-live="polite">
+        
+        <!-- Step 1: We Understood Your Request -->
+        <div class="result-card intent-card" id="intent-summary-card">
+          <div class="card-header">
+            <div class="header-icon intent-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+            </div>
+            <div class="header-meta">
+              <h2 class="card-title">We understood your request</h2>
+              <span class="card-subtitle">Extracted intent behind your words</span>
+            </div>
+            <div class="badges-row">
+              <span class="pill-badge pill-lang" id="badge-detected-lang">Detected: Marathi</span>
+              <span class="pill-badge pill-category" id="badge-category">Hardware / Arduino</span>
+            </div>
+          </div>
+          
+          <div class="intent-body">
+            <p class="intent-text" id="intent-description">
+              You are looking for beginner-friendly, budget-conscious Arduino project ideas suitable for a college engineering student.
+            </p>
+            <div class="intent-highlights" id="intent-highlights-list">
+              <!-- Dynamically populated tags -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Your Optimized Prompt -->
+        <div class="result-card prompt-card" id="optimized-prompt-card">
+          <div class="card-header">
+            <div class="header-icon prompt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            </div>
+            <div class="header-meta">
+              <h2 class="card-title">Your Optimized Prompt</h2>
+              <span class="card-subtitle">Ready to copy and paste into any AI</span>
+            </div>
+            <div class="prompt-stats" id="prompt-stats">
+              <span id="prompt-word-count">0 words</span> • <span id="prompt-char-count">0 chars</span>
+            </div>
+          </div>
+
+          <!-- Prompt Container (View Mode & Edit Mode) -->
+          <div class="prompt-content-wrapper">
+            <div class="prompt-display-view" id="prompt-display-view">
+              <pre class="prompt-text-block" id="prompt-output-text"></pre>
+            </div>
+            <div class="prompt-edit-view" id="prompt-edit-view" style="display:none;">
+              <textarea id="prompt-editable-textarea" rows="10" aria-label="Edit optimized prompt"></textarea>
+              <div class="edit-actions-bar">
+                <button type="button" class="btn-secondary btn-sm" id="btn-cancel-edit">Cancel</button>
+                <button type="button" class="btn-primary btn-sm" id="btn-save-edit">Save Changes</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prompt Action Toolbar -->
+          <div class="prompt-actions-toolbar">
+            <div class="left-actions">
+              <button type="button" class="btn-action primary-copy-btn" id="btn-copy-prompt" aria-label="Copy prompt to clipboard">
+                <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M20 6 9 17l-5-5"/></svg>
+                <span class="btn-label" id="copy-btn-text">Copy Prompt</span>
+              </button>
+
+              <button type="button" class="btn-action" id="btn-toggle-edit" aria-label="Edit prompt">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                <span>Edit</span>
+              </button>
+
+              <button type="button" class="btn-action" id="btn-regenerate" aria-label="Regenerate prompt">
+                <svg class="regen-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+                <span>Regenerate</span>
+              </button>
+            </div>
+
+            <div class="right-actions">
+              <button type="button" class="btn-action-icon" id="btn-listen-prompt" title="Listen to prompt (Speech Audio)" aria-label="Listen">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+              </button>
+
+              <button type="button" class="btn-action-icon" id="btn-save-favorite" title="Save to favorites" aria-label="Save">
+                <svg class="fav-heart" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Recommended AI Matchmaker -->
+        <div class="result-card ai-recommend-card" id="ai-recommend-card">
+          <div class="card-header">
+            <div class="header-icon ai-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+            </div>
+            <div class="header-meta">
+              <h2 class="card-title">Recommended AI Tools</h2>
+              <span class="card-subtitle">Matched specifically for your task</span>
+            </div>
+          </div>
+
+          <div class="recommendations-container">
+            
+            <!-- Primary Top Match -->
+            <div class="primary-ai-box" id="primary-ai-box">
+              <div class="primary-ai-header">
+                <div class="ai-meta-group">
+                  <div class="ai-logo-badge" id="primary-ai-icon">🤖</div>
+                  <div>
+                    <div class="ai-title-row">
+                      <h3 class="ai-name" id="primary-ai-name">ChatGPT</h3>
+                      <span class="gold-badge" id="primary-ai-badge">🥇 Best for Your Task</span>
+                    </div>
+                    <p class="ai-developer" id="primary-ai-dev">By OpenAI</p>
+                  </div>
+                </div>
+
+                <button type="button" class="btn-launch-ai" id="btn-launch-primary" aria-label="Open AI Tool">
+                  <span class="btn-content">
+                    <span id="launch-primary-label">Open ChatGPT</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                  </span>
+                </button>
+              </div>
+
+              <div class="ai-details-body">
+                <p class="ai-reason-text" id="primary-ai-reason">
+                  <strong>Why it's best:</strong> ChatGPT provides precise pinout configurations, Arduino C++ boilerplate code, and component cost approximations.
+                </p>
+                <div class="ai-strengths" id="primary-ai-strengths">
+                  <!-- Strengths checklist -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Alternative Recommendations -->
+            <div class="alternatives-section">
+              <h4 class="alternatives-title">Also Consider</h4>
+              <div class="alternatives-grid" id="alternatives-grid">
+                <!-- Alternative cards populated via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Educational Breakdown (Why this prompt works) -->
+        <div class="result-card explanation-card">
+          <div class="card-header">
+            <div class="header-icon edu-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+            </div>
+            <div class="header-meta">
+              <h3 class="card-title-sm">Why this prompt works better than a simple question</h3>
+              <span class="card-subtitle">Prompt Engineering techniques applied automatically</span>
+            </div>
+          </div>
+          <div class="edu-grid">
+            <div class="edu-item">
+              <span class="edu-num">1</span>
+              <div>
+                <strong>Expert Persona Assignment:</strong> Tells the AI to think and speak like an experienced specialist rather than giving generic answers.
+              </div>
+            </div>
+            <div class="edu-item">
+              <span class="edu-num">2</span>
+              <div>
+                <strong>Context & Constraints:</strong> Injects budget bounds, beginner difficulty, and availability so the AI doesn't propose unrealistic options.
+              </div>
+            </div>
+            <div class="edu-item">
+              <span class="edu-num">3</span>
+              <div>
+                <strong>Step-by-Step Deliverable Schema:</strong> Enforces clear sections (BOM, Pinout, Code, Viva questions) for zero fluff.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="brand-title">Prompt<span>Bridge</span></span>
+          <p class="footer-tagline">"You don't need to know how to prompt AI. Just tell us what you want."</p>
+        </div>
+        <div class="footer-credits">
+          <p>Built for universal multilingual AI accessibility.</p>
+          <p class="engine-badge" id="footer-engine-status">⚡ Built-in Multilingual Engine Ready</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Prompt History Drawer (Slide-over) -->
+  <div class="drawer-overlay" id="history-drawer-overlay" aria-hidden="true"></div>
+  <aside class="drawer-panel" id="history-drawer" aria-labelledby="history-drawer-title" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+        <h2 id="history-drawer-title">Prompt History</h2>
+      </div>
+      <button type="button" class="btn-close" id="btn-close-history" aria-label="Close history drawer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-search-bar">
+      <input type="search" id="history-search-input" placeholder="Search saved prompts..." aria-label="Search prompt history">
+    </div>
+
+    <div class="drawer-body" id="history-list-container">
+      <!-- Dynamically filled with past prompts -->
+    </div>
+
+    <div class="drawer-footer">
+      <button type="button" class="btn-export-history btn-secondary btn-sm" id="btn-export-history">Export JSON</button>
+      <button type="button" class="btn-secondary btn-sm btn-danger" id="btn-clear-history">Clear History</button>
+    </div>
+  </aside>
+
+  <!-- Settings & API Key Modal -->
+  <div class="modal-overlay" id="settings-modal" style="display:none;" aria-modal="true" role="dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Settings & AI Keys</h3>
+        <button type="button" class="btn-close" id="btn-close-settings" aria-label="Close settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-form-group">
+          <label for="gemini-key-input">Google Gemini API Key (Optional):</label>
+          <input type="password" id="gemini-key-input" placeholder="AIzaSy..." class="text-input">
+          <small class="help-text">Leave blank to use PromptBridge's high-speed built-in Multilingual Intent Engine. Or provide your own key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">Google AI Studio</a>.</small>
+        </div>
+
+        <div class="settings-form-group">
+          <label for="model-select">Gemini Model:</label>
+          <select id="model-select" class="custom-select">
+            <option value="gemini-1.5-flash" selected>Gemini 1.5 Flash (Fast & Smart)</option>
+            <option value="gemini-2.0-flash">Gemini 2.0 Flash (Experimental)</option>
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Context)</option>
+          </select>
+        </div>
+
+        <div id="key-test-status" class="key-test-status" style="display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-test-key">Test Key</button>
+        <button type="button" class="btn-primary" id="btn-save-settings">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works Modal -->
+  <div class="modal-overlay" id="how-modal" style="display:none;" aria-modal="true" role="dialog">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header">
+        <h3>How PromptBridge Works</h3>
+        <button type="button" class="btn-close" id="btn-close-how" aria-label="Close modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body how-modal-body">
+        <div class="how-step-card">
+          <div class="how-num">1</div>
+          <div class="how-text">
+            <h4>Type in Your Natural Words</h4>
+            <p>Write exactly how you speak — in Marathi, Hindi, Hinglish, or broken English. Spelling mistakes and incomplete sentences are 100% fine.</p>
+          </div>
+        </div>
+        <div class="how-step-card">
+          <div class="how-num">2</div>
+          <div class="how-text">
+            <h4>Intent & Context Extraction</h4>
+            <p>PromptBridge decodes what you are actually trying to achieve (e.g. college project, job email, web scraping) rather than just fixing spelling.</p>
+          </div>
+        </div>
+        <div class="how-step-card">
+          <div class="how-num">3</div>
+          <div class="how-text">
+            <h4>Prompt Engineering Optimization</h4>
+            <p>Synthesizes a structured prompt with an assigned expert persona, constraints, and deliverable format for maximum quality AI responses.</p>
+          </div>
+        </div>
+        <div class="how-step-card">
+          <div class="how-num">4</div>
+          <div class="how-text">
+            <h4>1-Click Launch into Best AI Tool</h4>
+            <p>Automatically pairs you with the right tool (ChatGPT, Claude, Perplexity, etc.) and pre-loads your prompt in a single click.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-primary" id="btn-got-it">Got it, Let's Prompt!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Scripts -->
+  <script src="/js/toast.js"></script>
+  <script src="/js/ai-tools.js"></script>
+  <script src="/js/history.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

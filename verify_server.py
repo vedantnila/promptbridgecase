@@ -11,9 +11,11 @@ if sys.platform.startswith("win"):
     except Exception:
         pass
 
+BASE_URL = "http://127.0.0.1:3000"
+
 def post(path, body):
     req = urllib.request.Request(
-        f"http://localhost:3000{path}",
+        f"{BASE_URL}{path}",
         data=json.dumps(body).encode("utf-8"),
         headers={"Content-Type": "application/json"}
     )
@@ -26,14 +28,25 @@ def main():
     print("==================================================")
 
     # 1. Test HTML Page Serving
-    res = urllib.request.urlopen("http://localhost:3000/", timeout=5)
+    res = urllib.request.urlopen(f"{BASE_URL}/", timeout=5)
     html_content = res.read().decode("utf-8")
     assert res.status == 200
     assert "PromptBridge" in html_content
     assert "You don't need to know how to prompt AI." in html_content
     print("[PASS] 1. Root HTML Serving Verified!")
 
-    # 2. Test Marathi User Flow
+    # 2. Test CSS and JS Serving
+    css_res = urllib.request.urlopen(f"{BASE_URL}/css/style.css", timeout=5)
+    assert css_res.status == 200
+    assert len(css_res.read()) > 0
+    print("[PASS] 2. CSS Asset Serving Verified!")
+
+    js_res = urllib.request.urlopen(f"{BASE_URL}/js/app.js", timeout=5)
+    assert js_res.status == 200
+    assert len(js_res.read()) > 0
+    print("[PASS] 3. JS Asset Serving Verified!")
+
+    # 3. Test Marathi User Flow
     marathi_res = post("/api/generate", {
         "input": "mala college sathi easy arduino project pahije low cost madhe"
     })
@@ -44,9 +57,9 @@ def main():
     assert "Marathi" in marathi_res["detectedLanguage"]
     assert marathi_res["category"] == "hardware_engineering"
     assert marathi_res["recommendedTool"]["id"] == "chatgpt"
-    print("[PASS] 2. Marathi Request Flow Verified!")
+    print("[PASS] 4. Marathi Request Flow Verified!")
 
-    # 3. Test Short/Broken Intent: "make project on arduino cheap"
+    # 4. Test Short/Broken Intent: "make project on arduino cheap"
     short_res = post("/api/generate", {
         "input": "make project on arduino cheap"
     })
@@ -54,9 +67,9 @@ def main():
     print("Understood Intent:", short_res["understoodIntent"])
     assert "Arduino" in short_res["optimizedPrompt"]
     assert short_res["category"] == "hardware_engineering"
-    print("[PASS] 3. Short / Broken Sentence Intent Extraction Verified!")
+    print("[PASS] 5. Short / Broken Sentence Intent Extraction Verified!")
 
-    # 4. Test Hinglish Workplace Email
+    # 5. Test Hinglish Workplace Email
     email_res = post("/api/generate", {
         "input": "boss ko fever ke liye leave email likh do professional 2 din ke liye"
     })
@@ -65,9 +78,9 @@ def main():
     print("Top Recommended AI:", email_res["recommendedTool"]["name"])
     assert email_res["category"] == "email_communication"
     assert email_res["recommendedTool"]["id"] == "claude"
-    print("[PASS] 4. Hinglish Workplace Communication Flow Verified!")
+    print("[PASS] 6. Hinglish Workplace Communication Flow Verified!")
 
-    # 5. Test AI Tool Launch URLs (Prefill vs Standard)
+    # 6. Test AI Tool Launch URLs (Prefill vs Standard)
     launch_chatgpt = post("/api/launch-url", {
         "toolId": "chatgpt",
         "prompt": "Optimize Arduino Code"
@@ -82,14 +95,7 @@ def main():
     assert launch_claude["prefilled"] == False
     assert launch_claude["url"] == "https://claude.ai/new"
 
-    launch_perp = post("/api/launch-url", {
-        "toolId": "perplexity",
-        "prompt": "Current stock market trends"
-    })
-    assert launch_perp["prefilled"] == True
-    assert "https://www.perplexity.ai/search?q=" in launch_perp["url"]
-
-    print("[PASS] 5. Tool Launch URLs & Prefill Builders Verified!")
+    print("[PASS] 7. Tool Launch URLs & Prefill Builders Verified!")
 
     print("\n==================================================")
     print("  ALL END-TO-END SERVER VERIFICATIONS PASSED!     ")

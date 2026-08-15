@@ -1,43 +1,10 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/*.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/generate",
-      "dest": "/api/generate.py"
-    },
-    {
-      "src": "/api/status",
-      "dest": "/api/status.py"
-    },
-    {
-      "src": "/api/test-key",
-      "dest": "/api/test_key.py"
-    },
-    {
-      "src": "/api/launch-url",
-      "dest": "/api/launch_url.py"
-    },
-    {
-      "src": "/css/(.*)",
-      "dest": "/public/css/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "dest": "/public/js/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/index.html"
-    }
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/generate", "destination": "/api/generate.py" },
+    { "source": "/api/status", "destination": "/api/status.py" },
+    { "source": "/api/test-key", "destination": "/api/test_key.py" },
+    { "source": "/api/launch-url", "destination": "/api/launch_url.py" }
   ]
 }
