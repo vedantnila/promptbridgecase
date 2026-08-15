@@ -1,0 +1,2 @@
+# Python dependencies for Vercel
+# PromptBridge uses standard library for maximum speed and zero build overhead.
