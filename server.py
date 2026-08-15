@@ -1,11 +1,13 @@
 """
 PromptBridge HTTP & REST API Server.
 Zero-dependency, multi-threaded server serving frontend assets and AI generation endpoints.
+Compatible with local development and Vercel Serverless runtime.
 """
 
 import os
 import sys
 
+# Ensure UTF-8 output encoding on Windows console
 if sys.platform.startswith("win"):
     try:
         sys.stdout.reconfigure(encoding="utf-8")
@@ -15,7 +17,7 @@ if sys.platform.startswith("win"):
 import json
 import traceback
 import mimetypes
-from http.server import HTTPServer, ThreadingHTTPServer, SimpleHTTPRequestHandler
+from http.server import HTTPServer, ThreadingHTTPServer, SimpleHTTPRequestHandler, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 from pathlib import Path
 
@@ -44,7 +46,9 @@ PORT = int(os.environ.get("PORT", 3000))
 
 class PromptBridgeHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(ROOT_DIR), **kwargs)
+        if "directory" not in kwargs:
+            kwargs["directory"] = str(ROOT_DIR)
+        super().__init__(*args, **kwargs)
 
     def _send_json(self, data: dict, status_code: int = 200):
         """Helper to send JSON responses."""
@@ -57,7 +61,10 @@ class PromptBridgeHandler(SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.end_headers()
         self.wfile.write(res_bytes)
-        self.wfile.flush()
+        try:
+            self.wfile.flush()
+        except Exception:
+            pass
 
     def do_OPTIONS(self):
         """Handle CORS pre-flight requests."""
@@ -93,6 +100,8 @@ class PromptBridgeHandler(SimpleHTTPRequestHandler):
             # Explicit root serving
             if path in ["/", "/index.html"]:
                 index_path = ROOT_DIR / "index.html"
+                if not index_path.exists():
+                    index_path = ROOT_DIR / "public" / "index.html"
                 with open(index_path, "rb") as f:
                     content = f.read()
                 self.send_response(200)
@@ -100,10 +109,13 @@ class PromptBridgeHandler(SimpleHTTPRequestHandler):
                 self.send_header("Content-Length", str(len(content)))
                 self.end_headers()
                 self.wfile.write(content)
-                self.wfile.flush()
+                try:
+                    self.wfile.flush()
+                except Exception:
+                    pass
                 return
 
-            # Serve other static assets
+            # Serve static assets
             super().do_GET()
         except Exception as e:
             print(f"[Error in do_GET]: {e}")
@@ -171,6 +183,11 @@ class PromptBridgeHandler(SimpleHTTPRequestHandler):
         except Exception as e:
             print(f"[Error in do_POST]: {e}")
             traceback.print_exc()
+
+# Top-level exports for Vercel Serverless Entrypoint detection
+handler = PromptBridgeHandler
+app = PromptBridgeHandler
+application = PromptBridgeHandler
 
 def run_server():
     server_address = ("127.0.0.1", PORT)
